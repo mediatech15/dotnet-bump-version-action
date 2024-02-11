@@ -65,15 +65,15 @@ inputs:
     default: "false"
     required: false
 outputs:
-  version:
+  Version:
     description: The <Version> field after any changes or the original if no changes. Can be empty if not found
-  package_version:
+  PackageVersion:
     description: The <PackageVersion> field after any changes or the original if no changes. Can be empty if not found
-  assembly_version:
+  AssemblyVersion:
     description: The <AssemblyVersion> field after any changes or the original if no changes. Can be empty if not found
-  file_version:
+  FileVersion:
     description: The <FileVersion> field after any changes or the original if no changes. Can be empty if not found
-  informational_version:
+  InformationalVersion:
     description: The <InformationalVersion> field after any changes or the original if no changes. Can be empty if not found
 runs:
   using: node20
