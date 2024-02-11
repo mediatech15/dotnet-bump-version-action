@@ -50,8 +50,8 @@ export const commit = async (
         core.info(`git push ${remoteRepo} HEAD:${branch}`) // eslint-disable-line
         await exec('git', ['push', `${remoteRepo}`, `HEAD:${branch}`], options) // eslint-disable-line
         if (inputs.doTag) {
-          core.info(`git push ${remoteRepo} tag ${newVersion}`) // eslint-disable-line
-          await exec('git', ['push', `${remoteRepo}`, 'tag', `${newVersion}`], options) // eslint-disable-line
+          core.info(`git push ${remoteRepo} ${newVersion}`) // eslint-disable-line
+          await exec('git', ['push', `${remoteRepo}`, `${newVersion}`], options) // eslint-disable-line
         }
       }
     }
