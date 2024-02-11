@@ -1,4 +1,12 @@
 {
     "git.ignoreLimitWarning": true,
-    "eslint.workingDirectories": [{ "directory": "c:/r/SiqiLu/dotnet-bump-version/", "changeProcessCWD": true }]
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "hide-files.files": []
 }

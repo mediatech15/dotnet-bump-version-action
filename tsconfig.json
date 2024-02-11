@@ -1,13 +1,25 @@
 {
-    "compilerOptions": {
-        "alwaysStrict": true /* Ensures that your files are parsed in the ECMAScript strict mode, and emit “use strict” for each source file.*/,
-        "target": "ES6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015/ES6', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', 'ES2021', 'ES2022' or 'ESNEXT'. */,
-        "module": "Node16" /* Specify module code generation: 'None', 'CommonJS', 'AMD', 'UMD', 'System', 'ES2015/ES6', 'ES2020', 'ES2022', 'ESNext', 'Node16' or 'NodeNext'. */,
-        "outDir": "./lib" /* Redirect output structure to the directory. */,
-        "rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
-        "strict": true /* Enable all strict type-checking options. */,
-        "noImplicitAny": false /* Raise error on expressions and declarations with an implied 'any' type. */,
-        "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-    },
-    "exclude": ["node_modules", "**/*.test.ts"]
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "target": "ES6",
+    "module": "ES2022",
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "newLine": "lf"
+  },
+  "include": [
+    "./src/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "lib"
+  ]
 }
