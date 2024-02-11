@@ -31,10 +31,10 @@ async function bumpVersion (): Promise<void> {
       if (toVersion === '') {
         toVersion = bump.newVersion
       }
-      if (bump.newVersion !== '') {
+      if (bump.newVersion !== '' && !versions.includes(`${bump.newVersion};`)) {
         versions += `${bump.newVersion};`
       }
-      if (bump.newAssemblyVersion !== '') {
+      if (bump.newAssemblyVersion !== '' && !versions.includes(`${bump.newVersion};`)) {
         assemblyVersions += `${bump.newAssemblyVersion};`
       }
     }
