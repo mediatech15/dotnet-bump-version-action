@@ -50,7 +50,7 @@ export class Bump {
     for (const [key, value] of Object.entries(Bump._versions)) {
       let outVal = ''
       core.info(`Working on ${key}`)
-      const match = originContent.match(value)
+      const match = value.exec(originContent)
       core.debug('Bump.bump match: ')
       core.debug(JSON.stringify(match))
       if (key === 'AssemblyVersion' || key === 'FileVersion') {
