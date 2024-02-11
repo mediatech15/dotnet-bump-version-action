@@ -91,7 +91,7 @@ export class Bump {
               core.debug('Bump.bump preform inc: ')
               core.debug(JSON.stringify(match[2]))
               core.debug(JSON.stringify(semver.RELEASE_TYPES[this._inputs.bump]))
-              const update = semver.inc(match[2], semver.RELEASE_TYPES[this._inputs.bump], false, this._inputs.preTag)
+              const update = semver.inc(match[2], this.getReleaseType(this._inputs.bump), false, this._inputs.preTag)
               core.debug(JSON.stringify(update))
               if (update !== null) {
                 semverValue = update
@@ -116,6 +116,10 @@ export class Bump {
       core.setOutput(key, outVal)
     }
     return modified
+  }
+
+  private getReleaseType (bump: string): semver.ReleaseType {
+    return semver.RELEASE_TYPES.find(i => i === bump) ?? 'patch'
   }
 
   private replaceInFile (reg: RegExp, value: string): void {
