@@ -44,10 +44,6 @@ inputs:
         - Branch: task.Fix -> 1.0.0-task.Fix.1
         - Branch: release/ReleaseA -> 1.0.0-release-ReleaseA.1
         - Branch: AwesomeBranch -> 1.0.0-AwesomeBranch.1
-  build_meta:
-    default: ""
-    required: false
-    description: Optional build info to postpend to the version in allowed fields
   read_only:
     default: "false"
     required: false

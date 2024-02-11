@@ -1,116 +1,82 @@
-# dotnet-bump-version
+# dotnet-bump-version-action
 
 A GitHub Action to easily bump .NET Core project version files(.csproj).
 
--   Bumps the version number in the provided version files(default **/*.csproj).
--   Push changes to the repository that triggered a workflow.
+> [!NOTE]
+> This was forked from `SiqiLu/dotnet-bump-version` but has ended up being mostly
+> rewritten. Credit to `SiqiLu` for the idea and the initial start to this action.
 
-This action program only supports "push" events.
+- Bumps the version number in the provided version files(default **/*.csproj).
+- Can push the changes to github
+- Can tag the version and push
+- Can specify a custom pre-release tag or rely on branch name
+- Can run in read-only mode to output the versions without modifying
+
+> [!IMPORTANT]
+> This action only supports "push" events.
+
+> [!IMPORTANT]
+> This action needs write access to content if run in a provate repo
+
+## Supported csproj fields and versioning type
+
+- `<Version>` - Semver
+- `<PackageVersion>` - Semver
+- `<AssemblyVersion>` - Semver
+- `<FileVersion>` - Assmebly
+- `<InformationalVersion>` - Assmebly
 
 ## Usage
 
-<!-- start usage -->
+### Example with all fields shown
 
 ```yaml
-- uses: SiqiLu/dotnet-bump-version@master
+- name: Bump versions
+  uses: mediatech15/dotnet-bump-version-action@1.0.0
   with:
-      # Version files to bump version. 
-      # You can use Glob pattern string (like "**/*.csproj") or Glob patterns array json string (like "["**/*.csproj", "v1.version", "**/*.version.json", "!v2.version.json"]"). # # Patterns supported by Globby are supported. Leading ! changes the meaning of an include pattern to exclude.
-      # default: "**/*.csproj"
-      # required: false
-      version_file: "**/*.csproj"
-      
-      # Control which part of the version to be bumped. 
-      # Example:
-      #   "1.0.0.0": Bump the major part of the version.  2.3.4.5 => 3.0.0.0
-      #   "0.1.0.0": Bump the minor part of the version.  2.3.4.5 => 2.4.0.0
-      #   "0.0.1.0": Bump the patch part of the version.  2.3.4.5 => 2.3.5.0
-      #   "0.0.0.1": Bump the minor part of the version.  2.3.4.5 => 2.3.4.6
-      #   "1.0.1.0": Bump the major and the patch part of the version.  2.3.4.5 => 3.0.5.0
-      #   "1.1.1.1": Bump all the parts of the version.  2.3.4.5 => 3.4.5.6 
-      # default: "0.0.1.0"
-      # required: false
-      version_mask: "0.0.1.0"
-
-      # Overwrite the bumped version. Use this input option to overwrite the version or part of the version. 
-      # If you want to modified all versions in the version files to a specifed version number, you should use this input option. 
-      # If you do not want overwrite the version or any part of the version, you should just ignore this input option. 
-      # Example:
-      #   "*.*.*.*" does not overwrite ant part of the version.
-      #   "1.*.*.*" overwrite the major part with number 1.
-      #   "*.*.*.Alpha" overwrite the build part with string "Alpha".
-      #   "*.*.*.${{ github.run_number }}" overwrite the build part with ${{ github.run_number }}.'
-      # default: "*.*.*.*"
-      # required: false
-      version_overwrite: "*.*.*.*"
-
-      # The github token to push changes. Leave the github_token option as default or empty string, the action will not push any changes to your repository.
-      # required: false
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+    version_files: "**/*.csproj"
+    bump: patch
+    pre_tag: myAwesomeTag
+    read_only: false
+    github_token: ${{ secrets.myToken }}
+    do_commit: true
+    do_tag: true
 ```
+### All inputs with defaults explained
 
-<!-- end usage -->
+| input | default | about |
+| --- | :---: | --- |
+|`version_files`|`**/*.csproj`|this is a glob or stringed json array of globs|
+|`bump`|Required `none`|the type of versioning to preform. If readonly then any value can be passed|
+|`pre_tag`|branch name|the tag to follow in a version in a prerelease build. Will be followed by a build number|
+|`read_only`|`false`|reads in and sets output of current versions|
+|`github_token`|`env.GITHUB_TOKEN`|a token useable for options used. contents read or write|
+|`do_commit`|`false`|should the changes be committed back|
+|`do_tag`|`false`|should the commit be tagged. Needs `do_commit` to be `true`|
 
-## Example usage
+### Outputs
 
-```yaml
-name: .NET Build
+#### version
 
-on: 
-    # Triggers the workflow on push events but only for the "master" branch
-    push:
-        branches: [ "master" ]
+This is the semantic version(s) that were either read out or updated to in the run.
 
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+#### assembly_version
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-    build:
-        runs-on: windows-latest
+This is the assembly version(s) that were either read out or updated to in the run.
 
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup .NET Core
-              uses: actions/setup-dotnet@v2
-              with:
-                  dotnet-version: 6.0.x
-            - name: Install dependencies
-              run: dotnet restore
-            - name: Build
-              run: dotnet build --configuration Release --no-restore
-            - name: Bump versions
-              uses: SiqiLu/dotnet-bump-version@2.1.0
-              with:
-                  version_files: "**/*.csproj"
-                  version_mask: 0.0.1.0
-                  version_overwrite: "*.*.*.*"
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-```
+> [!WARNING]
+> These may not have the same number of elements as it is based on the fields in a given csproj
 
-## Test cases
+> [!IMPORTANT]
+> This only outputs unique values not each one.
 
-- [x]   1.0.0.0 => 1.0.0.1
-- [x]   2.3.4.5 => 2.3.5.0
-- [x]   2.3.4.5 => 3.0.0.0
-- [x]   2.3.4.5 => 3.0.5.0
-- [x]   2.3.4 => 2.4.0
-- [x]   2.3.4 => 3.0.0
-- [x]   2.3 => 2.4
-- [x]   2.3 => 3.0
-- [x]   2 => 3
-- [x]   2.3.4.5 => 2.3.4.${{ github.run_number }}
-- [x]   2.3.4.5 => 2.3.4.Alpha
-- [x]   2.3 => 2.${{ github.run_number }}
-- [x]   2.3.4.5 => 3.Alpha.5.${{ github.run_number }}
+> [!NOTE]
+> If multiple versions are to be output they will be separated with semi-colons
+>
+> Ex. `1.0.0;1.1.0;1.1.1`
 
-## Break changes
-
--  Version 1.0.*, this action bump the build part of the version with the default action input options.
--  2.3.4.5 => 2.3.4.6
-
--  Version 2.0.*, this action bump the patch part of the version with the default action input options.
--  2.3.4.5 => 2.3.5.0
+> [!TIP]
+> If you need to version multiple packages/projects and use the outputs the action multiple times with different globs
 
 ## License
 

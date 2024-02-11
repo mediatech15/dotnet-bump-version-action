@@ -12,7 +12,6 @@ export class Inputs {
     core.info('')
     core.info(`Inputs.bump: ${this.bump}`)
     core.info(`Inputs.pre_tag: ${this.preTag}`)
-    core.info(`Inputs.build_meta: ${this.buildMeta}`)
     core.info(`Inputs.read_only: ${this.readOnly}`) // eslint-disable-line
     core.info(`Inputs.do_commit: ${this.doCommit}`) // eslint-disable-line
     core.info(`Inputs.do_tag: ${this.doTag}`) // eslint-disable-line
@@ -43,10 +42,6 @@ export class Inputs {
 
   public get githubToken (): string {
     return core.getInput('github_token')
-  }
-
-  public get buildMeta (): string {
-    return core.getInput('build_meta')
   }
 
   public get readOnly (): boolean {
