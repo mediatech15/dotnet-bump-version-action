@@ -34,7 +34,7 @@ async function bumpVersion (): Promise<void> {
       if (bump.newVersion !== '' && !versions.includes(`${bump.newVersion};`)) {
         versions += `${bump.newVersion};`
       }
-      if (bump.newAssemblyVersion !== '' && !versions.includes(`${bump.newVersion};`)) {
+      if (bump.newAssemblyVersion !== '' && !assemblyVersions.includes(`${bump.newAssemblyVersion};`)) {
         assemblyVersions += `${bump.newAssemblyVersion};`
       }
     }
