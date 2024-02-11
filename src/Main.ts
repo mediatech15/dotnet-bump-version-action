@@ -9,7 +9,7 @@ async function bumpVersion (): Promise<void> {
 
   const inputs = (await import('./Inputs.js')).Inputs.current
 
-  if (github.context.eventName !== 'push') {
+  if (github.context.eventName !== 'push' && !core.isDebug()) { // eslint-disable-line
     core.info(`Github event is ${github.context.eventName} and not "push", exit.`) // eslint-disable-line
     return
   }
