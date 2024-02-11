@@ -29,7 +29,7 @@ export class Inputs {
 
   public get bump (): string {
     const val = core.getInput('bump', { required: true })
-    if (val in ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease']) {
+    if (['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease'].includes(val)) {
       return val
     } else {
       core.setFailed('Invalid input for bump')
