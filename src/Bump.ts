@@ -113,7 +113,7 @@ export class Bump {
           core.info('Not found')
         }
       }
-      core.setOutput(key, outVal)
+      core.setOutput(key.toLowerCase().split('version')[0].concat('_version'), outVal)
     }
     return modified
   }
