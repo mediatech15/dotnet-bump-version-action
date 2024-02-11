@@ -65,16 +65,10 @@ inputs:
     default: "false"
     required: false
 outputs:
-  Version:
-    description: The <Version> field after any changes or the original if no changes. Can be empty if not found
-  PackageVersion:
-    description: The <PackageVersion> field after any changes or the original if no changes. Can be empty if not found
-  AssemblyVersion:
-    description: The <AssemblyVersion> field after any changes or the original if no changes. Can be empty if not found
-  FileVersion:
-    description: The <FileVersion> field after any changes or the original if no changes. Can be empty if not found
-  InformationalVersion:
-    description: The <InformationalVersion> field after any changes or the original if no changes. Can be empty if not found
+  version:
+    description: Semantic version used. If multiple versions exist in a run they are ; separated
+  assembly_version:
+    description: Assembly version used. If multiple versions exist in a run they are ; separated
 runs:
   using: node20
   main: lib/Main.js

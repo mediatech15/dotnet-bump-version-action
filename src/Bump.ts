@@ -34,6 +34,7 @@ export class Bump {
   private readonly _inputs: Inputs
 
   public newVersion: string = ''
+  public newAssemblyVersion: string = ''
 
   constructor (file: string, inputs: Inputs) {
     this._file = file
@@ -48,7 +49,6 @@ export class Bump {
     let modified = false
     let semverValue = ''
     for (const [key, value] of Object.entries(Bump._versions)) {
-      let outVal = ''
       core.info(`Working on ${key}`)
       const match = value.exec(originContent)
       core.debug('Bump.bump match: ')
@@ -60,7 +60,7 @@ export class Bump {
         } else {
           if (match !== null && match.length > 3) {
             if (this._inputs.readOnly) {
-              outVal = match[2]
+              this.newAssemblyVersion = match[2]
             } else {
               const semParsed = semver.parse(semverValue)
               if (semParsed !== null) {
@@ -72,7 +72,7 @@ export class Bump {
                   }
                 }
                 const assemVer = `${semParsed.major}.${semParsed.minor}.${semParsed.patch}.${buildNum}`
-                outVal = assemVer
+                this.newAssemblyVersion = assemVer
                 this.replaceInFile(value, assemVer)
                 modified = true
               }
@@ -84,9 +84,9 @@ export class Bump {
       } else {
         if (match !== null && match.length > 3) {
           if (this._inputs.readOnly) {
-            outVal = match[2]
+            this.newVersion = match[2]
           } else {
-            outVal = match[2]
+            this.newVersion = match[2]
             if (semverValue === '') {
               core.debug('Bump.bump preform inc: ')
               core.debug(JSON.stringify(match[2]))
@@ -95,8 +95,7 @@ export class Bump {
               core.debug(JSON.stringify(update))
               if (update !== null) {
                 semverValue = update
-                outVal = semverValue
-                this.newVersion = update
+                this.newVersion = semverValue
                 this.replaceInFile(value, semverValue)
                 modified = true
               } else {
@@ -104,7 +103,7 @@ export class Bump {
                 core.warning(match[2])
               }
             } else {
-              outVal = semverValue
+              this.newVersion = semverValue
               this.replaceInFile(value, semverValue)
               modified = true
             }
@@ -113,7 +112,6 @@ export class Bump {
           core.info('Not found')
         }
       }
-      core.setOutput(key, outVal)
     }
     return modified
   }

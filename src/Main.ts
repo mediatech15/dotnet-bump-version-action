@@ -20,6 +20,8 @@ async function bumpVersion (): Promise<void> {
   core.info('')
 
   const bumpedFiles: string[] = []
+  let versions = ''
+  let assemblyVersions = ''
   let toVersion = ''
 
   versionFiles.forEach(file => {
@@ -29,12 +31,23 @@ async function bumpVersion (): Promise<void> {
       if (toVersion === '') {
         toVersion = bump.newVersion
       }
+      if (bump.newVersion !== '') {
+        versions += `${bump.newVersion};`
+      }
+      if (bump.newAssemblyVersion !== '') {
+        assemblyVersions += `${bump.newAssemblyVersion};`
+      }
     }
   })
+
+  versions = versions.endsWith(';') ? versions.slice(0, -1) : versions
+  assemblyVersions = assemblyVersions.endsWith(';') ? assemblyVersions.slice(0, -1) : assemblyVersions
 
   if (inputs.needPushChanges && bumpedFiles.length > 0) {
     await commit(bumpedFiles, 'Bump versions by dotnet-bump-version-action', inputs, toVersion)
   }
+  core.setOutput('version', versions)
+  core.setOutput('assembly_version', assemblyVersions)
 
   core.info('dotnet-bump-version-action action is finished')
 }
