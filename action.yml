@@ -1,5 +1,5 @@
 name: dotnet versioning
-description: A GitHub Action to easily bump .NET project version files(.csproj). Major, minor, patch, build are supported.
+description: A GitHub Action to easily bump .NET project version files(.csproj).
 author: medaitech15
 branding:
   icon: edit
