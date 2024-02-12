@@ -2,9 +2,9 @@
   "name": "dotnet-bump-version-action",
   "version": "1.0.0",
   "description": "A GitHub Action to easily bump .NET Core project version files(.csproj). Updated and improved for expected semantic changes. Forked from SiqiLu/dotnet-bump-version",
-  "main": "lib/main.js",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "npx esbuild ./src/*.ts --outdir=./lib --format=cjs --platform=node --log-level=debug",
+    "build": "npx esbuild ./src/Main.ts --outfile=./lib/index.js --bundle --platform=node",
     "lint": "npx ts-standard",
     "format": "npx ts-standard --fix"
   },

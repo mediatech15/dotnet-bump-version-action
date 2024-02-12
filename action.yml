@@ -67,4 +67,4 @@ outputs:
     description: Assembly version used. If multiple versions exist in a run they are ; separated
 runs:
   using: node20
-  main: lib/Main.js
+  main: lib/index.js
